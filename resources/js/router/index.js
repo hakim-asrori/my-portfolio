@@ -22,7 +22,7 @@ router.beforeEach(async (to, from, next) => {
     if (to.meta.middleware === "guest") {
         if (token) {
             next({
-                name: "Dashboard",
+                name: "Home",
             });
         } else {
             next();

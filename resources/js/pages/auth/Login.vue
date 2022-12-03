@@ -13,6 +13,14 @@
 
                         <div class="card">
                             <div class="card-body">
+                                <div
+                                    class="card text-white"
+                                    v-if="errorMessage"
+                                >
+                                    <div class="card-body bg-danger">
+                                        {{ errorMessage }}
+                                    </div>
+                                </div>
                                 <div class="m-sm-4">
                                     <form
                                         method="post"
@@ -90,26 +98,17 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">
-                        Modal title
+                        {{ successMessage.status }}
                     </h1>
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                    ></button>
                 </div>
-                <div class="modal-body">...</div>
+                <div class="modal-body">{{ successMessage.message }}</div>
                 <div class="modal-footer">
                     <button
                         type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
+                        class="btn btn-primary"
+                        @click="redirectTo"
                     >
-                        Close
-                    </button>
-                    <button type="button" class="btn btn-primary">
-                        Save changes
+                        OK
                     </button>
                 </div>
             </div>
@@ -118,6 +117,8 @@
 </template>
 
 <script>
+import Cookies from "js-cookie";
+
 export default {
     data() {
         return {
@@ -126,6 +127,8 @@ export default {
                 password: "",
             },
             errors: {},
+            errorMessage: "",
+            successMessage: {},
         };
     },
     methods: {
@@ -133,11 +136,25 @@ export default {
             this.$store
                 .dispatch("postData", ["auth/login", this.form])
                 .then((result) => {
-                    console.log(result);
+                    this.successMessage = {
+                        message: result.message,
+                        status: result.status,
+                    };
+                    Cookies.set("token", result.token);
+                    $("#exampleModal").modal("show");
+                    setTimeout(() => {
+                        this.redirectTo();
+                    }, 3000);
                 })
                 .catch((err) => {
+                    if (err.response.data.status == "warning") {
+                        this.errorMessage = err.response.data.errors;
+                    }
                     this.errors = err.response.data.errors;
                 });
+        },
+        redirectTo() {
+            location.href = "/admin/home";
         },
     },
 };

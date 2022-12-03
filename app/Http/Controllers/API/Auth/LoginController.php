@@ -25,12 +25,14 @@ class LoginController extends Controller
         $user = $this->userRepository->findByCriteria(['email' => $loginRequest->email]);
         if (!$user) {
             return response()->json([
+                'status' => 'warning',
                 'errors' => 'email or password not found!',
             ], Response::HTTP_BAD_REQUEST);
         }
 
         if (!Hash::check($loginRequest->password, $user->password)) {
             return response()->json([
+                'status' => 'warning',
                 'errors' => 'email or password not found!',
             ], Response::HTTP_BAD_REQUEST);
         }
@@ -41,7 +43,7 @@ class LoginController extends Controller
 
         return response()->json([
             'message' => 'login success!',
-            'type' => 'success',
+            'status' => 'success',
             'data' => $user,
             'token' => $token->plainTextToken
         ]);
