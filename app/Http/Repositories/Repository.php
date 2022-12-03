@@ -40,6 +40,16 @@ class Repository implements RepositoryInterface
     }
 
     /**
+     * @param $id
+     *
+     * @return Model
+     */
+    public function findTrashed($id): Model
+    {
+        return $this->model->onlyTrashed()->findOrFail($id);
+    }
+
+    /**
      * @param array $criteria
      *
      * @return Model
@@ -91,10 +101,23 @@ class Repository implements RepositoryInterface
      *
      * @return void
      */
-    public function delete($id)
+    public function trash($id)
     {
         return $this->model
             ->where('id', $id)
             ->delete();
+    }
+
+    /**
+     * @param $id
+     *
+     * @return void
+     */
+    public function delete($id)
+    {
+        return $this->model
+            ->onlyTrashed()
+            ->where('id', $id)
+            ->forceDelete();
     }
 }
