@@ -128,12 +128,11 @@ export default {
                 });
         },
 
-        onSort(e) {
-            this.pagination.perPage = e;
-            this.getContact();
-        },
         onSearch() {
-            this.getContact();
+            setTimeout(() => {
+                this.pagination.page = 1;
+                this.getContact();
+            }, 1200);
         },
         onPageChange(e) {
             this.pagination.page = e;
