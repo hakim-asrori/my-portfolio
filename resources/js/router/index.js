@@ -5,7 +5,7 @@ import { createRouter, createWebHistory } from "vue-router";
 const router = createRouter({
     history: createWebHistory(),
     routes,
-    linkActiveClass: "text-warning",
+    linkActiveClass: "text-white",
 });
 
 router.beforeEach(async (to, from, next) => {

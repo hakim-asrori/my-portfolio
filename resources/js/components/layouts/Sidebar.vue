@@ -9,7 +9,7 @@
                 <li class="sidebar-header">Dashboard</li>
 
                 <li class="sidebar-item">
-                    <router-link class="sidebar-link" to="/admin">
+                    <router-link class="sidebar-link" to="/admin/home">
                         <i class="align-middle" data-feather="sliders"></i>
                         <span class="align-middle">Home</span>
                     </router-link>
@@ -51,3 +51,7 @@
         </div>
     </nav>
 </template>
+
+<script>
+
+</script>
