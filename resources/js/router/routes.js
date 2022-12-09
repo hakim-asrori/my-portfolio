@@ -1,4 +1,7 @@
+import contact from "./services/contact";
+
 const routes = [
+    ...contact,
     {
         path: "/",
         name: "Login",
