@@ -1,27 +1,10 @@
 <script>
-import Pagination from "./Pagination.vue";
 
 export default {
     props: {
         feature: {
             type: String,
             default: "",
-        },
-        isSort: {
-            type: Boolean,
-            default: true,
-        },
-        isShow: {
-            type: Boolean,
-            default: true,
-        },
-        isSearch: {
-            type: Boolean,
-            default: true,
-        },
-        isPaginate: {
-            type: Boolean,
-            default: true,
         },
         isDetail: {
             type: Boolean,
@@ -51,16 +34,8 @@ export default {
             type: Array,
             default: [],
         },
-        metaPagination: {
-            type: Object,
-            default: {},
-        },
     },
     data() {
-        return {
-            sort: 10,
-            search: "",
-        };
     },
     methods: {
         iteration(index) {
@@ -71,43 +46,10 @@ export default {
                 1
             );
         },
-        onSort() {
-            this.$emit("onSort", this.sort);
-        },
-        onSearch() {
-            this.$emit("onSearch", this.search);
-        },
-        onPageChange(e) {
-            this.$emit("onPageChange", e);
-        },
     },
-    components: { Pagination },
 };
 </script>
 <template>
-    <div class="card">
-        <div class="card-header d-flex justify-content-between">
-            <div class="d-flex align-items-center" v-if="isSort">
-                Show
-                <select class="form-control" @change="onSort" v-model="sort">
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-                entries
-            </div>
-            <div class="d-flex align-items-center" v-if="isSearch">
-                Search:
-                <input
-                    type="search"
-                    class="form-control"
-                    @keyup="onSearch"
-                    v-model="search"
-                />
-            </div>
-        </div>
-        <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-hover table-bordered table-striped">
                     <thead>
@@ -215,19 +157,6 @@ export default {
                         </tr>
                     </tbody>
                 </table>
-            </div>
         </div>
-        <div class="card-footer d-flex justify-content-between">
-            <p v-if="isShow">
-                Showing {{ metaPagination.from }} to {{ metaPagination.to }} of
-                {{ metaPagination.total }} entries
-            </p>
-            <Pagination
-                v-if="isPaginate"
-                :pagination="metaPagination"
-                @onPageChange="onPageChange($event)"
-            />
-        </div>
-    </div>
 </template>
 <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail align-middle"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> -->

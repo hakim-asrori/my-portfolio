@@ -53,24 +53,29 @@
                         </li>
                     </ul>
                 </div>
-
                 <Loader v-if="isLoading" />
 
-                <Table
-                    :feature="'admin/contact'"
-                    :isShow="true"
-                    :isPaginate="true"
-                    :isSort="false"
-                    :isSearch="true"
-                    :numeric="false"
-                    :headings="headings"
-                    :data="tickets"
-                    :variables="variables"
-                    :metaPagination="metaPagination"
-                    @onSort="onSort($event)"
-                    @onSearch="onSearch($event)"
-                    @onPageChange="onPageChange($event)"
-                />
+                <div class="card-body">
+                    <div class="d-flex justify-content-between flex-md-row flex-xs-column align-items-center">
+                        <input type="search" class="form-control" style="width: 30%; margin-top: -10px;" @keyup="onSearch" v-model="search">
+
+                        <Pagination :pagination="metaPagination" @onPageChange="onPageChange($event)" />
+                    </div>
+
+                    <Table
+                        :feature="'admin/contact'"
+                        :isShow="true"
+                        :isPaginate="true"
+                        :isSort="false"
+                        :isSearch="true"
+                        :numeric="false"
+                        :headings="headings"
+                        :data="tickets"
+                        :variables="variables"
+                        @onSort="onSort($event)"
+                        @onSearch="onSearch($event)"
+                    />
+                </div>
             </div>
         </div>
     </div>
@@ -79,6 +84,7 @@
 <script>
 import Table from "../../components/Table.vue";
 import Loader from "../../components/Loader.vue";
+import Pagination from "../../components/Pagination.vue";
 export default {
     data() {
         return {
@@ -106,6 +112,7 @@ export default {
             const params = [
                 `per_page=${this.pagination.perPage}`,
                 `page=${this.pagination.page}`,
+                `search=${this.search}`
             ].join("&");
 
             this.$store
@@ -125,8 +132,7 @@ export default {
             this.pagination.perPage = e;
             this.getContact();
         },
-        onSearch(e) {
-            this.search = e;
+        onSearch() {
             this.getContact();
         },
         onPageChange(e) {
@@ -134,6 +140,18 @@ export default {
             this.getContact();
         },
     },
-    components: { Table, Loader },
+    components: { Table, Loader, Pagination },
 };
 </script>
+
+<style>
+@media (max-width: 576px) {
+    .flex-xs-column {
+        flex-direction: column!important;
+    }
+
+    .flex-xs-column input.form-control {
+        width: 70% !important;
+    }
+}
+</style>
