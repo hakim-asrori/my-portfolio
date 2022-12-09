@@ -1,4 +1,5 @@
 <template>
+    <Loader v-if="isLoading" />
     <main class="d-flex w-100">
         <div class="container d-flex flex-column">
             <div class="row vh-100">
@@ -89,15 +90,15 @@
     </main>
     <div
         class="modal fade"
-        id="exampleModal"
+        id="popUpSuccess"
         tabindex="-1"
-        aria-labelledby="exampleModalLabel"
+        aria-labelledby="popUpSuccessLabel"
         aria-hidden="true"
     >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    <h1 class="modal-title fs-5" id="popUpSuccessLabel">
                         {{ successMessage.status }}
                     </h1>
                 </div>
@@ -118,6 +119,7 @@
 
 <script>
 import Cookies from "js-cookie";
+import Loader from "../../components/Loader.vue";
 
 export default {
     data() {
@@ -126,6 +128,7 @@ export default {
                 email: "",
                 password: "",
             },
+            isLoading: false,
             errors: {},
             errorMessage: "",
             successMessage: {},
@@ -133,20 +136,23 @@ export default {
     },
     methods: {
         handleSubmit() {
+            this.isLoading = true;
             this.$store
                 .dispatch("postData", ["auth/login", this.form])
                 .then((result) => {
+                    this.isLoading = false;
                     this.successMessage = {
                         message: result.message,
                         status: result.status,
                     };
                     Cookies.set("token", result.token);
-                    $("#exampleModal").modal("show");
+                    $("#popUpSuccess").modal("show");
                     setTimeout(() => {
                         this.redirectTo();
                     }, 3000);
                 })
                 .catch((err) => {
+                    this.isLoading = false;
                     if (err.response.data.status == "warning") {
                         this.errorMessage = err.response.data.errors;
                     }
@@ -157,5 +163,6 @@ export default {
             location.href = "/admin/home";
         },
     },
+    components: { Loader },
 };
 </script>
