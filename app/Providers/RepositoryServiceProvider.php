@@ -7,8 +7,10 @@ use App\Http\Repositories\CobaRepository;
 use App\Http\Repositories\ContactRepository;
 use App\Http\Repositories\Interfaces\CobaInterface;
 use App\Http\Repositories\Interfaces\ContactInterface;
+use App\Http\Repositories\Interfaces\ProjectInterface;
 use App\Http\Repositories\Interfaces\RepositoryInterface;
 use App\Http\Repositories\Interfaces\UserInterface;
+use App\Http\Repositories\ProjectRepository;
 use App\Http\Repositories\UserRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -35,5 +37,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CobaInterface::class, CobaRepository::class);
         $this->app->bind(UserInterface::class, UserRepository::class);
         $this->app->bind(ContactInterface::class, ContactRepository::class);
+        $this->app->bind(ProjectInterface::class, ProjectRepository::class);
     }
 }

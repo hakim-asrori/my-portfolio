@@ -33,7 +33,7 @@
                                 <div class="row g-0 align-items-center">
                                     <div class="col-2">
                                         <img
-                                            src="img/avatars/avatar-5.jpg"
+                                            src=""
                                             class="avatar img-fluid rounded-circle"
                                             alt="Vanessa Tucker"
                                         />
@@ -56,7 +56,7 @@
                                 <div class="row g-0 align-items-center">
                                     <div class="col-2">
                                         <img
-                                            src="img/avatars/avatar-2.jpg"
+                                            src=""
                                             class="avatar img-fluid rounded-circle"
                                             alt="William Harris"
                                         />
@@ -79,7 +79,7 @@
                                 <div class="row g-0 align-items-center">
                                     <div class="col-2">
                                         <img
-                                            src="img/avatars/avatar-4.jpg"
+                                            src=""
                                             class="avatar img-fluid rounded-circle"
                                             alt="Christina Mason"
                                         />
@@ -101,7 +101,7 @@
                                 <div class="row g-0 align-items-center">
                                     <div class="col-2">
                                         <img
-                                            src="img/avatars/avatar-3.jpg"
+                                            src=""
                                             class="avatar img-fluid rounded-circle"
                                             alt="Sharon Lessman"
                                         />
