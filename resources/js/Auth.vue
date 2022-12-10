@@ -8,7 +8,7 @@ export default {
         "$route.params.search": {
             handler: function (search) {
                 if (Cookie.get("token")) {
-                    window.location.replace("/admin");
+                    window.location.replace("/");
                 }
             },
             deep: true,
