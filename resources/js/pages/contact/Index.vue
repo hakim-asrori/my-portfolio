@@ -93,94 +93,24 @@
         </div>
     </div>
 
-    <div
-        class="modal fade"
-        id="deleteModal"
-        tabindex="-1"
-        aria-labelledby="deleteModalLabel"
-        aria-hidden="true"
-        data-bs-backdrop="static"
-        data-bs-keyboard="false"
-    >
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="deleteModalLabel">
-                        Deleting Data
-                    </h1>
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                    ></button>
-                </div>
-                <form method="post">
-                    <div class="modal-body">
-                        Are you sure you want to <strong>delete</strong> this
-                        data? This action cannot be undone.
-                    </div>
-                    <div class="modal-footer">
-                        <button
-                            type="button"
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            type="button"
-                            class="btn btn-danger"
-                            @click="deleteContact"
-                        >
-                            Confirm
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    <DeleteModal id="deleteModal" @onDelete="deleteContact" />
 
-    <div
-        class="modal fade"
-        id="successModal"
-        tabindex="-1"
-        aria-labelledby="successModalLabel"
-        aria-hidden="true"
-        data-bs-backdrop="static"
-        data-bs-keyboard="false"
-    >
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="successModalLabel">
-                        success
-                    </h1>
-                </div>
-                <div class="modal-body">Data has been deleted.</div>
-                <div class="modal-footer">
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        data-bs-dismiss="modal"
-                    >
-                        OK
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <SuccessModal :msg="message" />
 </template>
 
 <script>
 import Table from "../../components/Table.vue";
 import Loader from "../../components/Loader.vue";
 import Pagination from "../../components/Pagination.vue";
+import DeleteModal from "../../components/modals/DeleteModal.vue";
+import SuccessModal from "../../components/modals/SuccessModal.vue";
+
 export default {
     data() {
         return {
             headings: ["Name", "Email", "Action"],
             variables: ["name", "email"],
+            message: "",
 
             contacts: [],
 
@@ -228,7 +158,10 @@ export default {
                 .dispatch("deleteData", ["contact/trash", this.deleteId])
                 .then((result) => {
                     this.isLoading = false;
+                    this.message = "data has been deleted";
+
                     this.getContact();
+
                     $("#successModal").modal("show");
                 })
                 .catch((error) => {
@@ -251,7 +184,7 @@ export default {
             this.getContact();
         },
     },
-    components: { Table, Loader, Pagination },
+    components: { Table, Loader, Pagination, DeleteModal, SuccessModal },
 };
 </script>
 
