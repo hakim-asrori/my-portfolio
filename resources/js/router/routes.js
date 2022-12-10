@@ -1,7 +1,9 @@
 import contact from "./services/contact";
+import project from "./services/project";
 
 const routes = [
     ...contact,
+    ...project,
     {
         path: "/auth/login",
         name: "Login",

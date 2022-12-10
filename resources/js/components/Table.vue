@@ -10,7 +10,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in data" :key="index">
+                <tr
+                    v-for="(item, index) in data"
+                    :key="index"
+                    v-if="data.length > 0"
+                >
                     <td v-if="numeric">{{ iteration(index) }}</td>
                     <td v-for="variable in variables">
                         {{ item[variable] }}
@@ -85,6 +89,11 @@
                                 <line x1="14" y1="11" x2="14" y2="17"></line>
                             </svg>
                         </button>
+                    </td>
+                </tr>
+                <tr v-else>
+                    <td colspan="100%" class="text-center">
+                        No matching records found
                     </td>
                 </tr>
             </tbody>
