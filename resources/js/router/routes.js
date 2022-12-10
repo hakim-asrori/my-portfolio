@@ -3,7 +3,7 @@ import contact from "./services/contact";
 const routes = [
     ...contact,
     {
-        path: "/",
+        path: "/auth/login",
         name: "Login",
         component: () => import("../pages/auth/Login.vue"),
         meta: {
@@ -11,15 +11,7 @@ const routes = [
         },
     },
     {
-        path: "/admin",
-        name: "Home2",
-        component: () => import("../pages/home/Index.vue"),
-        meta: {
-            middleware: "auth",
-        },
-    },
-    {
-        path: "/admin/home",
+        path: "/",
         name: "Home",
         component: () => import("../pages/home/Index.vue"),
         meta: {

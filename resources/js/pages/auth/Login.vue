@@ -149,7 +149,7 @@ export default {
                     $("#popUpSuccess").modal("show");
                     setTimeout(() => {
                         this.redirectTo();
-                    }, 3000);
+                    }, 1000);
                 })
                 .catch((err) => {
                     this.isLoading = false;
@@ -160,7 +160,7 @@ export default {
                 });
         },
         redirectTo() {
-            location.href = "/admin/home";
+            location.href = "/";
         },
     },
     components: { Loader },

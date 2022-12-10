@@ -164,7 +164,7 @@ export default {
                 .dispatch("postData", ["auth/logout", {}])
                 .then((result) => {
                     Cookies.remove("token");
-                    window.location.replace("/");
+                    window.location.replace("/auth/login");
                 });
         },
     },

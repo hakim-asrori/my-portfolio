@@ -5,7 +5,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <ul class="nav nav-tabs">
+                    <!-- <ul class="nav nav-tabs">
                         <li class="nav-item">
                             <a
                                 class="nav-link active"
@@ -51,49 +51,72 @@
                         <li class="nav-item">
                             <a class="nav-link disabled">Disabled</a>
                         </li>
-                    </ul>
+                    </ul> -->
                 </div>
                 <Loader v-if="isLoading" />
 
                 <div class="card-body">
-                    <div class="d-flex justify-content-between flex-md-row flex-xs-column align-items-center">
-                        <input type="search" class="form-control" style="width: 30%; margin-top: -10px;" @keyup="onSearch" v-model="search">
+                    <div
+                        class="d-flex justify-content-between flex-md-row flex-xs-column align-items-center"
+                    >
+                        <input
+                            type="search"
+                            class="form-control"
+                            style="width: 30%; margin-top: -10px"
+                            @keyup="onSearch"
+                            v-model="search"
+                        />
 
-                        <Pagination :pagination="metaPagination" @onPageChange="onPageChange($event)" />
+                        <Pagination
+                            :pagination="metaPagination"
+                            @onPageChange="onPageChange($event)"
+                        />
                     </div>
 
                     <Table
-                        :feature="'admin/contact'"
+                        :feature="'contact'"
                         :isShow="true"
                         :isPaginate="true"
                         :isSort="false"
                         :isSearch="true"
+                        :isEdit="false"
                         :numeric="false"
                         :headings="headings"
                         :data="tickets"
                         :variables="variables"
                         @onSort="onSort($event)"
                         @onSearch="onSearch($event)"
+                        @onDelete="onDelete($event)"
                     />
                 </div>
             </div>
         </div>
     </div>
+
+    <DeleteModal id="deleteModal" @onDelete="deleteContact" />
+
+    <SuccessModal :msg="message" />
 </template>
 
 <script>
 import Table from "../../components/Table.vue";
 import Loader from "../../components/Loader.vue";
 import Pagination from "../../components/Pagination.vue";
+import DeleteModal from "../../components/modals/DeleteModal.vue";
+import SuccessModal from "../../components/modals/SuccessModal.vue";
+
 export default {
     data() {
         return {
             headings: ["Name", "Email", "Action"],
             variables: ["name", "email"],
+            message: "",
 
             contacts: [],
 
             isLoading: false,
+
+            deleteId: null,
 
             search: "",
             pagination: {
@@ -112,7 +135,7 @@ export default {
             const params = [
                 `per_page=${this.pagination.perPage}`,
                 `page=${this.pagination.page}`,
-                `search=${this.search}`
+                `search=${this.search}`,
             ].join("&");
 
             this.$store
@@ -127,7 +150,29 @@ export default {
                     console.log(error);
                 });
         },
+        deleteContact() {
+            $("#deleteModal").modal("hide");
+            this.isLoading = true;
 
+            this.$store
+                .dispatch("deleteData", ["contact/trash", this.deleteId])
+                .then((result) => {
+                    this.isLoading = false;
+                    this.message = "data has been deleted";
+
+                    this.getContact();
+
+                    $("#successModal").modal("show");
+                })
+                .catch((error) => {
+                    this.isLoading = false;
+                    console.log(error);
+                });
+        },
+        onDelete(e) {
+            this.deleteId = e;
+            $("#deleteModal").modal("show");
+        },
         onSearch() {
             setTimeout(() => {
                 this.pagination.page = 1;
@@ -139,14 +184,14 @@ export default {
             this.getContact();
         },
     },
-    components: { Table, Loader, Pagination },
+    components: { Table, Loader, Pagination, DeleteModal, SuccessModal },
 };
 </script>
 
 <style>
 @media (max-width: 576px) {
     .flex-xs-column {
-        flex-direction: column!important;
+        flex-direction: column !important;
     }
 
     .flex-xs-column input.form-control {

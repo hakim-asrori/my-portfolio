@@ -13,14 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/auth/{any}', function () {
     return view('auth');
 });
 
-Route::get('admin/{any}', function () {
+Route::get('/{any}', function () {
     return view('app');
-});
+})->where('any', '^(?!auth).*$');
 
-Route::get('admin', function () {
-    return view('app');
-});
+// Route::get('admin', function () {
+//     return view('app');
+// });

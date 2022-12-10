@@ -39,11 +39,11 @@ export default {
                         console.log(error);
                         this.error = error.response.data;
                         Cookie.remove("token");
-                        window.location.replace("");
+                        window.location.replace("/auth/login");
                     });
 
                 if (Cookie.get("token") == undefined) {
-                    window.location.replace("");
+                    window.location.replace("/auth/login");
                 }
             },
             deep: true,
