@@ -16,9 +16,10 @@
                     v-if="data.length > 0"
                 >
                     <td v-if="numeric">{{ iteration(index) }}</td>
-                    <td v-for="variable in variables">
-                        {{ item[variable] }}
-                    </td>
+                    <td
+                        v-for="variable in variables"
+                        v-html="item[variable]"
+                    ></td>
                     <td>
                         <router-link
                             v-if="isDetail"
