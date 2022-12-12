@@ -5,7 +5,10 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0"></h5>
+                    <ButtonAdd
+                        :route="'/project/create'"
+                        :title="'Add New Project'"
+                    />
                 </div>
                 <Loader v-if="isLoading" />
                 <div class="card-body">
@@ -52,6 +55,7 @@
 </template>
 
 <script>
+import ButtonAdd from "../../components/ButtonAdd.vue";
 import Loader from "../../components/Loader.vue";
 import DeleteModal from "../../components/modals/DeleteModal.vue";
 import SuccessModal from "../../components/modals/SuccessModal.vue";
@@ -144,6 +148,13 @@ export default {
             this.getProject();
         },
     },
-    components: { Loader, Pagination, Table, DeleteModal, SuccessModal },
+    components: {
+        Loader,
+        Pagination,
+        Table,
+        DeleteModal,
+        SuccessModal,
+        ButtonAdd,
+    },
 };
 </script>

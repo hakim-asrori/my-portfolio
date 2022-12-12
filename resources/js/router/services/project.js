@@ -8,18 +8,17 @@ export default [
         },
     },
     {
-        path: "/project/:id/detail",
-        name: "Detail Project",
-        component: () => import("../../pages/project/Detail.vue"),
+        path: "/project/create",
+        name: "Create Project",
+        component: () => import("../../pages/project/Create.vue"),
         meta: {
             middleware: "auth",
         },
-        props: true,
     },
     {
-        path: "/project/:id/edit",
-        name: "Edit Project",
-        component: () => import("../../pages/project/Edit.vue"),
+        path: "/project/:id/detail",
+        name: "Detail Project",
+        component: () => import("../../pages/project/Detail.vue"),
         meta: {
             middleware: "auth",
         },

@@ -5,6 +5,7 @@
         <div class="col-12">
             <div class="card">
                 <Loader v-if="isLoading" />
+
                 <div class="card-body">
                     <div class="mb-3">
                         <label>Project Name</label>
@@ -29,6 +30,14 @@
                             class="form-control"
                             v-model="project.projectStatus"
                         />
+                    </div>
+                    <div class="mb-3">
+                        <label>Project Description</label>
+                        <textarea
+                            class="form-control"
+                            rows="5"
+                            v-model="project.projectDescription"
+                        ></textarea>
                     </div>
                     <div class="mb-3">
                         <label>Project Document</label>

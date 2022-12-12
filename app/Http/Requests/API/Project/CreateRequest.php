@@ -29,12 +29,17 @@ class CreateRequest extends FormRequest
         return [
             'project_name' => 'required',
             'project_domain' => 'required',
+            'project_description' => 'required',
             'documents.*' => 'required|image|mimes:png,jpg,jpeg'
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
+        if (!request('documents')) {
+            $validator->errors()->add('documents', 'The project documents field is required.');
+        }
+
         $response = new JsonResponse([
             'errors' => $validator->errors(),
             'status_code' => 400

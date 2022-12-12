@@ -29,7 +29,7 @@ class UpdateRequest extends FormRequest
         return [
             'project_name' => 'required',
             'project_domain' => 'required',
-            'documents.*' => 'required|image|mimes:png,jpg,jpeg'
+            'documents.*' => 'image|mimes:png,jpg,jpeg'
         ];
     }
 

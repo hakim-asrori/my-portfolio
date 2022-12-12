@@ -19,7 +19,8 @@ class ProjectFactory extends Factory
         return [
             'project_name' => fake()->name(),
             'project_domain' => fake()->url(),
-            'project_status' => mt_rand(0, 1)
+            'project_status' => mt_rand(0, 1),
+            'project_description' => fake()->text(500)
         ];
     }
 }
