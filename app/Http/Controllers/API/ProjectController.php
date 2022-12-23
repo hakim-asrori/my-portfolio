@@ -48,7 +48,7 @@ class ProjectController extends Controller
     public function show($id)
     {
         $project = $this->projectRepository->find($id);
-        $project->load('document');
+        $project->load('documents');
 
         return new ProjectDetail($project);
     }
@@ -59,8 +59,8 @@ class ProjectController extends Controller
         $project = $this->projectRepository->find($id);
 
         return DB::transaction(function () use ($attributes, $project) {
-            if ($project->document) {
-                $this->updateDocument($project);
+            if ($project->documents) {
+                $this->updateDocument($attributes, $project);
             }
 
             if (isset($attributes['documents']) && $attributes['documents']) {
@@ -98,16 +98,17 @@ class ProjectController extends Controller
         });
     }
 
-    public function updateDocument($project)
+    public function updateDocument($attributes, $project)
     {
-        $modelDocument = $project->document();
+        $modelDocument = $project->documents();
         if (isset($attributes['old_documents'])) {
             $modelDocument = $modelDocument->whereNotIn('id', $attributes['old_documents']);
         }
 
         $documents = $modelDocument->get();
         foreach ($documents as $document) {
-            Storage::delete($document->document_path);
+            $path = str_replace(url('storage') . '/', '', $document->document_path);
+            Storage::delete($path);
         }
 
         return $modelDocument->delete();

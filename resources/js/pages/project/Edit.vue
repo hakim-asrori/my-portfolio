@@ -1,12 +1,12 @@
 <template>
-    <Back :route="'project'" :title="'Create Project'" />
+    <Back :route="'project'" :title="'Edit Project'" />
 
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <Loader v-if="isLoading" />
 
-                <form method="post" @submit.prevent="handleSubmit">
+                <form @submit.prevent="handleSubmit" method="post">
                     <div class="card-body">
                         <div class="mb-3">
                             <label :class="{ error: errors.projectName }"
@@ -15,8 +15,8 @@
                             <input
                                 type="text"
                                 class="form-control"
+                                v-model="project.projectName"
                                 :class="{ 'is-invalid': errors.projectName }"
-                                v-model="form.projectName"
                             />
                             <Errors
                                 v-if="errors.projectName"
@@ -30,8 +30,8 @@
                             <input
                                 type="text"
                                 class="form-control"
+                                v-model="project.projectDomain"
                                 :class="{ 'is-invalid': errors.projectDomain }"
-                                v-model="form.projectDomain"
                             />
                             <Errors
                                 v-if="errors.projectDomain"
@@ -44,11 +44,11 @@
                             >
                             <textarea
                                 class="form-control"
+                                rows="5"
                                 :class="{
                                     'is-invalid': errors.projectDescription,
                                 }"
-                                v-model="form.projectDescription"
-                                rows="5"
+                                v-model="project.projectDescription"
                             ></textarea>
                             <Errors
                                 v-if="errors.projectDescription"
@@ -56,18 +56,16 @@
                             />
                         </div>
                         <div class="mb-3">
-                            <label :class="{ error: errors.documents }"
-                                >Project Document</label
-                            >
+                            <label>Project Document</label>
                             <div class="d-flex flex-column flex-md-row gap-2">
                                 <div
                                     class="mb-3 col-lg-6 text-center"
                                     style="cursor: pointer"
                                     id="customFileInput"
+                                    @click="handleUpload"
                                     :class="{
                                         'is-invalid error': errors.documents,
                                     }"
-                                    @click="handleUpload"
                                 >
                                     <p>
                                         <svg
@@ -103,7 +101,6 @@
                                         id="fileInput"
                                         @change="chooseDocument"
                                         hidden
-                                        ref="fileInput"
                                     />
 
                                     <span
@@ -111,11 +108,6 @@
                                         v-if="errors.document"
                                         >{{ errors.document }}</span
                                     >
-
-                                    <Errors
-                                        v-if="errors.documents"
-                                        :errors="errors.documents"
-                                    />
                                 </div>
                                 <div class="mb-3 col-lg-6 row">
                                     <div
@@ -143,6 +135,31 @@
                                             "
                                         />
                                     </div>
+                                    <div
+                                        style="width: 100px; height: 100px"
+                                        class="d-flex justify-content-end"
+                                        v-if="project.documents"
+                                        v-for="(
+                                            document, index
+                                        ) in project.documents"
+                                        :key="index"
+                                    >
+                                        <span
+                                            class="btn btn-danger btn-sm position-absolute cursor"
+                                            @click="removeOldDocument(index)"
+                                            >&times;</span
+                                        >
+                                        <img
+                                            alt=""
+                                            :src="document.documentPath"
+                                            class="img-thumbnail"
+                                            style="
+                                                object-fit: cover;
+                                                width: 100px;
+                                                height: 100px;
+                                            "
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -154,8 +171,11 @@
                                     type="checkbox"
                                     role="switch"
                                     id="project-status"
-                                    v-model="form.projectStatus"
-                                    @change="changeStatus(form.projectStatus)"
+                                    v-model="project.projectStatus"
+                                    :checked="project.projectStatus == 1"
+                                    @change="
+                                        changeStatus(project.projectStatus)
+                                    "
                                 />
                                 <label
                                     class="form-check-label"
@@ -165,10 +185,9 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="card-footer d-flex justify-content-end">
                         <button class="btn btn-sm btn-primary">
-                            Add Project
+                            Save Project
                         </button>
                     </div>
                 </form>
@@ -192,53 +211,83 @@ export default {
         return {
             isLoading: false,
 
-            form: {
-                projectName: "",
-                projectDomain: "",
-                projectStatus: 0,
-                projectDescription: "",
-            },
-
+            project: {},
             errors: {},
-            message: "",
             status: "Inactive",
+
+            oldDocuments: [],
 
             newDocuments: [],
             previewNewDocuments: [],
+
+            errors: {},
         };
+    },
+    mounted() {
+        this.getProject();
     },
     computed: {
         formData() {
-            const formData = new FormData();
-            formData.append("project_name", this.form.projectName);
-            formData.append("project_domain", this.form.projectDomain);
+            let formData = new FormData();
+            formData.append("project_name", this.project.projectName);
+            formData.append("project_domain", this.project.projectDomain);
             formData.append(
                 "project_description",
-                this.form.projectDescription
+                this.project.projectDescription
             );
 
             this.newDocuments.forEach((document, index) => {
                 formData.append("documents[" + index + "]", document);
             });
 
+            this.oldDocuments.forEach((document, index) => {
+                formData.append("old_documents[" + index + "]", document.id);
+            });
+
             let status = 0;
-            if (this.form.projectStatus) {
+            if (this.project.projectStatus) {
                 status = 1;
             }
 
             formData.append("project_status", status);
+            formData.append("_method", "PUT");
 
             return formData;
         },
     },
     methods: {
-        handleSubmit() {
+        getProject() {
             this.isLoading = true;
             this.$store
-                .dispatch("postDataUpload", [this.formData, "project"])
+                .dispatch("showData", ["project", this.id])
                 .then((response) => {
                     this.isLoading = false;
-                    this.message = "project has been created";
+                    this.project = response.data;
+                    this.oldDocuments = response.data.documents;
+
+                    if (response.data.projectStatus == 1) {
+                        this.status = "Active";
+                        $("#project-status")
+                            .addClass("bg-success")
+                            .removeClass("bg-danger");
+                    }
+                })
+                .catch((error) => {
+                    this.isLoading = false;
+                    console.log(error);
+                });
+        },
+        handleSubmit() {
+            console.log(this.formData);
+            this.isLoading = true;
+            this.$store
+                .dispatch("postDataUpload", [
+                    this.formData,
+                    "/project/" + this.id,
+                ])
+                .then((response) => {
+                    this.isLoading = false;
+                    this.message = "project has been updated";
                     $("#successModal").modal("show");
                 })
                 .catch((error) => {
@@ -247,7 +296,7 @@ export default {
                 });
         },
         chooseDocument(e) {
-            const documents = this.$refs.fileInput.files;
+            const documents = e.target.files;
             this.errors = {};
             this.newDocuments = [];
             for (let i = 0; i < documents.length; i++) {
@@ -265,9 +314,11 @@ export default {
             }
         },
         removeNewDocument(index) {
-            this.$refs.fileInput.value = "";
             this.newDocuments.splice(index, 1);
             this.previewNewDocuments.splice(index, 1);
+        },
+        removeOldDocument(index) {
+            this.project.documents.splice(index, 1);
         },
         handleUpload() {
             $("#fileInput").click();
@@ -286,7 +337,7 @@ export default {
             }
         },
     },
-    components: { Back, Loader, Errors, SuccessModal },
+    components: { Back, Loader, SuccessModal, Errors },
 };
 </script>
 
@@ -295,9 +346,5 @@ export default {
     padding: 30px;
     border-radius: 5px;
     border: 2px dashed #ced4da;
-}
-
-#customFileInput.is-invalid {
-    border: 2px dashed red;
 }
 </style>

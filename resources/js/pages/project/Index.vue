@@ -31,11 +31,11 @@
 
                     <Table
                         :feature="'project'"
-                        :isShow="true"
+                        :isDetail="false"
                         :isPaginate="true"
                         :isSort="false"
                         :isSearch="true"
-                        :isEdit="false"
+                        :isEdit="true"
                         :numeric="false"
                         :headings="headings"
                         :data="projects"
@@ -142,6 +142,11 @@ export default {
         onDelete(e) {
             this.deleteId = e;
             $("#deleteModal").modal("show");
+        },
+        onSearch(e) {
+            setTimeout(() => {
+                this.getProject();
+            }, 1000);
         },
         onPageChange(e) {
             this.pagination.page = e;

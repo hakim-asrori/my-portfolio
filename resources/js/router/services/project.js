@@ -16,9 +16,9 @@ export default [
         },
     },
     {
-        path: "/project/:id/detail",
-        name: "Detail Project",
-        component: () => import("../../pages/project/Detail.vue"),
+        path: "/project/:id/edit",
+        name: "Edit Project",
+        component: () => import("../../pages/project/Edit.vue"),
         meta: {
             middleware: "auth",
         },

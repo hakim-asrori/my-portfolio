@@ -81,6 +81,19 @@ const process = {
                 );
             });
         },
+        putDataUpload(state, param) {
+            return new Promise((resolve, reject) => {
+                Api.init();
+                Api.updateFormData(param[1], param[0]).then(
+                    (response) => {
+                        resolve(response.data);
+                    },
+                    (error) => {
+                        reject(error);
+                    }
+                );
+            });
+        },
         deleteData(context, param) {
             return new Promise((resolve, reject) => {
                 Api.init();
