@@ -42,10 +42,10 @@ const process = {
                 );
             });
         },
-        postDataUpload(context, param, url) {
+        postDataUpload(context, param) {
             return new Promise((resolve, reject) => {
                 Api.init();
-                Api.postFormData(url, param).then(
+                Api.postFormData(param[1], param[0]).then(
                     (response) => {
                         resolve(response.data);
                     },
@@ -74,6 +74,19 @@ const process = {
                 Api.put(param[0], param[1], param[2]).then(
                     (response) => {
                         resolve(response.data.data);
+                    },
+                    (error) => {
+                        reject(error);
+                    }
+                );
+            });
+        },
+        putDataUpload(state, param) {
+            return new Promise((resolve, reject) => {
+                Api.init();
+                Api.updateFormData(param[1], param[0]).then(
+                    (response) => {
+                        resolve(response.data);
                     },
                     (error) => {
                         reject(error);

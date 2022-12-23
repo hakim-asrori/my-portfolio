@@ -29,6 +29,7 @@
     <script src="{{ asset('assets/app.js') }}"></script>
     <script src="{{ asset('assets/jquery-3.6.1.min.js') }}"></script>
 
+    @stack('js')
 </body>
 
 </html>

@@ -64,8 +64,9 @@ const Api = {
             snakecaseKeys(params, { deep: true })
         );
     },
-    updateFormData(resource, slug, params) {
-        return axios.put(`${resource}/${slug}`, params, {
+    updateFormData(resource, params) {
+        console.log(resource, params);
+        return axios.put(`${resource}`, params, {
             transformResponse: [
                 (data) => {
                     if (data) {
@@ -83,28 +84,6 @@ const Api = {
         return axios.get(`${resource}`, {
             responseType: "blob",
             params: params,
-        });
-    },
-    postFormData(resource, params) {
-        return axios.post(`${resource}`, params, {
-            transformResponse: [
-                (data) => {
-                    if (data) {
-                        return camelcaseKeys(JSON.parse(data), { deep: true });
-                    }
-                },
-            ],
-        });
-    },
-    updateFormData(resource, slug, params) {
-        return axios.put(`${resource}/${slug}`, params, {
-            transformResponse: [
-                (data) => {
-                    if (data) {
-                        return camelcaseKeys(JSON.parse(data), { deep: true });
-                    }
-                },
-            ],
         });
     },
 };

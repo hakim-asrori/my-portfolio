@@ -9,7 +9,7 @@
                 <li class="sidebar-header">Dashboard</li>
 
                 <li class="sidebar-item">
-                    <router-link class="sidebar-link" to="/home">
+                    <router-link class="sidebar-link" :to="{ name: 'Home' }">
                         <i class="align-middle" data-feather="sliders"></i>
                         <span class="align-middle">Home</span>
                     </router-link>
@@ -25,7 +25,7 @@
                 <li class="sidebar-header">Others</li>
 
                 <li class="sidebar-item">
-                    <router-link class="sidebar-link" to="/contact">
+                    <router-link class="sidebar-link" :to="{ name: 'Contact' }">
                         <i
                             class="align-middle"
                             data-feather="message-square"
@@ -35,7 +35,7 @@
                 </li>
 
                 <li class="sidebar-item">
-                    <router-link class="sidebar-link" to="/project">
+                    <router-link class="sidebar-link" :to="{ name: 'Project' }">
                         <i class="align-middle" data-feather="package"></i>
                         <span class="align-middle">Project</span>
                     </router-link>

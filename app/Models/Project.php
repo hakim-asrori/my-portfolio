@@ -14,7 +14,7 @@ class Project extends Model
 
     protected $guarded = ['created_at', 'updated_at', 'deleted_at'];
 
-    public function document(): MorphMany
+    public function documents(): MorphMany
     {
         return $this->morphMany(Document::class, 'documentable');
     }

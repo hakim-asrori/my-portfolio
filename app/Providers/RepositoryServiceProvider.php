@@ -5,8 +5,10 @@ namespace App\Providers;
 use App\Http\Repositories\Repository;
 use App\Http\Repositories\CobaRepository;
 use App\Http\Repositories\ContactRepository;
+use App\Http\Repositories\DocumentRepository;
 use App\Http\Repositories\Interfaces\CobaInterface;
 use App\Http\Repositories\Interfaces\ContactInterface;
+use App\Http\Repositories\Interfaces\DocumentInterface;
 use App\Http\Repositories\Interfaces\ProjectInterface;
 use App\Http\Repositories\Interfaces\RepositoryInterface;
 use App\Http\Repositories\Interfaces\UserInterface;
@@ -38,5 +40,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserInterface::class, UserRepository::class);
         $this->app->bind(ContactInterface::class, ContactRepository::class);
         $this->app->bind(ProjectInterface::class, ProjectRepository::class);
+        $this->app->bind(DocumentInterface::class, DocumentRepository::class);
     }
 }

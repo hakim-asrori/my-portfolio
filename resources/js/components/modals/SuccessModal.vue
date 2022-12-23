@@ -21,6 +21,15 @@
                         type="button"
                         class="btn btn-primary"
                         data-bs-dismiss="modal"
+                        v-if="!route"
+                    >
+                        OK
+                    </button>
+                    <button
+                        @click="handleOk"
+                        type="button"
+                        class="btn btn-primary"
+                        v-else
                     >
                         OK
                     </button>
@@ -32,6 +41,12 @@
 
 <script>
 export default {
-    props: ["msg"],
+    props: ["msg", "route"],
+    methods: {
+        handleOk() {
+            $("#successModal").modal("hide");
+            this.$router.push(this.route);
+        },
+    },
 };
 </script>
