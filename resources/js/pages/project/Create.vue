@@ -42,14 +42,11 @@
                             <label :class="{ error: errors.projectDescription }"
                                 >Project Description</label
                             >
-                            <textarea
-                                class="form-control"
-                                :class="{
-                                    'is-invalid': errors.projectDescription,
-                                }"
+                            <ckeditor
                                 v-model="form.projectDescription"
-                                rows="5"
-                            ></textarea>
+                                :config="editorConfig"
+                                :editor="editor"
+                            />
                             <Errors
                                 v-if="errors.projectDescription"
                                 :errors="errors.projectDescription"
@@ -185,6 +182,7 @@ import Errors from "../../components/Errors.vue";
 import Loader from "../../components/Loader.vue";
 import SuccessModal from "../../components/modals/SuccessModal.vue";
 import CheckExtension from "../../store/services/checkExtension";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 export default {
     props: ["id"],
@@ -205,6 +203,24 @@ export default {
 
             newDocuments: [],
             previewNewDocuments: [],
+
+            editor: ClassicEditor,
+            editorData: "",
+            editorConfig: {
+                toolbar: [
+                    "heading",
+                    "|",
+                    "bold",
+                    "italic",
+                    "link",
+                    "bulletedList",
+                    "numberedList",
+                    "blockQuote",
+                    "insertTable",
+                    "undo",
+                    "redo",
+                ],
+            },
         };
     },
     computed: {

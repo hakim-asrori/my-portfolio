@@ -42,14 +42,19 @@
                             <label :class="{ error: errors.projectDescription }"
                                 >Project Description</label
                             >
-                            <textarea
+                            <!-- <textarea
                                 class="form-control"
                                 rows="5"
                                 :class="{
                                     'is-invalid': errors.projectDescription,
                                 }"
                                 v-model="project.projectDescription"
-                            ></textarea>
+                            ></textarea> -->
+                            <ckeditor
+                                v-model="project.projectDescription"
+                                :config="editorConfig"
+                                :editor="editor"
+                            />
                             <Errors
                                 v-if="errors.projectDescription"
                                 :errors="errors.projectDescription"
@@ -204,6 +209,7 @@ import Errors from "../../components/Errors.vue";
 import Loader from "../../components/Loader.vue";
 import SuccessModal from "../../components/modals/SuccessModal.vue";
 import CheckExtension from "../../store/services/checkExtension";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 export default {
     props: ["id"],
@@ -221,6 +227,24 @@ export default {
             previewNewDocuments: [],
 
             errors: {},
+
+            editor: ClassicEditor,
+            editorData: "",
+            editorConfig: {
+                toolbar: [
+                    "heading",
+                    "|",
+                    "bold",
+                    "italic",
+                    "link",
+                    "bulletedList",
+                    "numberedList",
+                    "blockQuote",
+                    "insertTable",
+                    "undo",
+                    "redo",
+                ],
+            },
         };
     },
     mounted() {
