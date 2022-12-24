@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
-    use  MultipleUpload;
+    use MultipleUpload;
 
     protected $projectRepository;
 
@@ -85,13 +85,13 @@ class ProjectController extends Controller
         $project = $this->projectRepository->findTrashed($id);
 
         return DB::transaction(function () use ($project) {
-            if ($project->document) {
-                foreach ($project->document as $document) {
+            if ($project->documents) {
+                foreach ($project->documents as $document) {
                     $path = str_replace(url('storage') . '/', '', $document->document_path);
                     Storage::delete($path);
                 }
 
-                $project->document()->delete();
+                $project->documents()->delete();
             }
 
             return $this->projectRepository->delete($project->id);
