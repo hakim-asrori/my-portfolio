@@ -11,7 +11,7 @@ trait MultipleUpload
         }
     }
 
-    protected function upload($document, $model, $folder)
+    protected function upload($document, $model, $folder, $request = [])
     {
         $documentPath = $this->storageFile($document, $folder);
         $request['document_path'] = $documentPath;
@@ -22,5 +22,10 @@ trait MultipleUpload
     protected function storageFile($document, $folder)
     {
         return $document->store($folder);
+    }
+
+    protected function uploadThumbnail($document, $model, $folder)
+    {
+        $this->upload($document, $model, $folder, ['document_thumbnail' => 1]);
     }
 }
